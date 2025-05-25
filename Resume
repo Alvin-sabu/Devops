@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevOps Terminal Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      font-size: 16px;
+    }
+    #terminal {
+      padding: 1em;
+      white-space: pre-wrap;
+    }
+    input {
+      background: black;
+      color: #00ff00;
+      border: none;
+      outline: none;
+      width: 90%;
+      font-family: monospace;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal">
+    <div>> Welcome to [Your Name]'s DevOps Terminal Portfolio. Type <b>help</b> to get started.</div>
+  </div>
+  <input type="text" id="input" autofocus />  <script>
+    const terminal = document.getElementById('terminal');
+    const input = document.getElementById('input');
+
+    const commands = {
+      help: `Available commands:
+  about - Learn about me
+  skills - See my tech stack
+  projects - List my projects
+  project <name> - Details about a specific project
+  contact - Get in touch
+  clear - Clear the terminal
+  exit - Exit the terminal`,
+
+      about: `I'm a Junior DevOps Engineer with 6 months of hands-on experience. I specialize in Linux systems, automation, and CI/CD pipelines.`,
+
+      skills: `Linux, Bash, Python, Docker, Jenkins, Git, GitHub Actions, AWS (EC2, S3, IAM), Prometheus, Grafana`,
+
+      projects: `1. linux-monitor
+2. cicd-demo
+3. dockerized-app
+Use 'project <name>' to see more details.`,
+
+      'project linux-monitor': `linux-monitor:
+A Bash script that logs and monitors CPU, memory, and disk usage on Linux. Includes alerting via email.`,
+
+      'project cicd-demo': `cicd-demo:
+A GitHub Actions CI/CD pipeline that tests and deploys a sample Node.js app to an AWS EC2 instance automatically.`,
+
+      'project dockerized-app': `dockerized-app:
+Dockerized a Python Flask application with Nginx reverse proxy and deployed it to AWS.`,
+
+      contact: `Email: you@example.com
+GitHub: https://github.com/yourusername
+LinkedIn: https://linkedin.com/in/yourusername`,
+
+      clear: '',
+      exit: 'Goodbye!'
+    };
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const cmd = input.value.trim();
+        const lowerCmd = cmd.toLowerCase();
+        input.value = '';
+
+        const output = document.createElement('div');
+        output.innerHTML = `> ${cmd}`;
+        terminal.appendChild(output);
+
+        if (commands[lowerCmd]) {
+          const result = document.createElement('div');
+          result.innerHTML = commands[lowerCmd].replace(/\n/g, '<br>');
+          terminal.appendChild(result);
+        } else if (lowerCmd.startsWith('project ')) {
+          const projCmd = lowerCmd;
+          if (commands[projCmd]) {
+            const result = document.createElement('div');
+            result.innerHTML = commands[projCmd].replace(/\n/g, '<br>');
+            terminal.appendChild(result);
+          } else {
+            terminal.appendChild(document.createElement('div')).innerText = 'Project not found.';
+          }
+        } else {
+          terminal.appendChild(document.createElement('div')).innerText = 'Command not found. Type "help" to see available commands.';
+        }
+
+        if (lowerCmd === 'clear') {
+          terminal.innerHTML = '';
+        }
+
+        if (lowerCmd === 'exit') {
+          input.disabled = true;
+        }
+
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+    });
+  </script></body>
+</html>
